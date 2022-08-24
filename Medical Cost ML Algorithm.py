@@ -57,12 +57,13 @@ tf.random.set_seed(42)
 
 # Create Compile and Fit Model
 EPOCHS = 25
-LEARNING_RATE = 0.001
+LEARNING_RATE = 0.01
 
 
 model = tf.keras.Sequential([ 
-    tf.keras.layers.Dense(100, activation = 'relu'),
-    tf.keras.layers.Dense(10),
+    tf.keras.layers.Dense(11, activation = 'relu'),
+    tf.keras.layers.Dense(11),
+    tf.keras.layers.Dense(11),
     tf.keras.layers.Dense(1, activation = 'linear')
 ])
 
