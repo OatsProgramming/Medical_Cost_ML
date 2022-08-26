@@ -56,24 +56,23 @@ X_test_normalized = ct.transform(X_test)
 tf.random.set_seed(42)
 
 # Create Compile and Fit Model
-EPOCHS = 25
+EPOCHS = 100
 LEARNING_RATE = 0.01
 
 
 model = tf.keras.Sequential([ 
     tf.keras.layers.Dense(11, activation = 'relu'),
-    tf.keras.layers.Dense(11),
-    tf.keras.layers.Dense(11),
+    tf.keras.layers.Dense(1_000),
     tf.keras.layers.Dense(1, activation = 'linear')
 ])
 
 model.compile(
     loss = 'mae',
-    optimizer = 'adam',
+    optimizer = tf.keras.optimizers.Adam(lr = LEARNING_RATE),
     metrics = ['mae']
 )
 
-lr_scheduler = tf.keras.callbacks.LearningRateScheduler(lambda epoch: LEARNING_RATE * 10**(epoch/20))
+#lr_scheduler = tf.keras.callbacks.LearningRateScheduler(lambda epoch: LEARNING_RATE * 10**(epoch/20))
 
 #log_dir = "logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
 #tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir, histogram_freq=1)
@@ -82,8 +81,8 @@ history = model.fit(
     X_train_normalized, 
     y_train, 
     epochs = EPOCHS, 
-    verbose = 0, 
-    callbacks = [lr_scheduler],
+    verbose = 0
+    #callbacks = [lr_scheduler],
 )
 
 # Evaluate the model
@@ -94,7 +93,7 @@ model.evaluate(X_test_normalized, y_test)
 y_pred = model.predict(X_test_normalized)
 
 history_visualizer(history)
-learning_rate_visualizer(LEARNING_RATE, EPOCHS, history)
+#learning_rate_visualizer(LEARNING_RATE, EPOCHS, history)
 
 # To view in tensorboard, write in command:
 # tensorboard --logdir logs/fit
